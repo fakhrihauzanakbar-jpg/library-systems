@@ -2,27 +2,42 @@
 
 @section('content')
 
+<div class="container">
     <h2>Daftar Buku</h2>
 
-    @if(count($books) > 0)
+    <p>Berikut adalah daftar buku yang tersedia di perpustakaan.</p>
 
-        <ul>
-            @foreach($books as $book)
-                <li>
-                    <strong>{{ $book['judul'] }}</strong><br>
-                    Penulis: {{ $book['penulis'] }}<br>
-                    Tahun Terbit: {{ $book['tahun'] }}<br>
-                    <a href="/books/{{ $loop->iteration }}">Lihat Detail</a>
-                </li>
+    @if($books->count() > 0)
 
-                <br>
-            @endforeach
-        </ul>
+        <table border="1" cellpadding="10" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Judul</th>
+                    <th>Penulis</th>
+                    <th>Tahun Terbit</th>
+                    <th>Stok</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach($books as $book)
+                    <tr>
+                        <td>{{ $book->id }}</td>
+                        <td>{{ $book->judul }}</td>
+                        <td>{{ $book->penulis }}</td>
+                        <td>{{ $book->tahun_terbit }}</td>
+                        <td>{{ $book->stok }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
 
     @else
 
-        <p>Belum ada buku.</p>
+        <p>Belum ada buku di database.</p>
 
     @endif
+</div>
 
 @endsection
