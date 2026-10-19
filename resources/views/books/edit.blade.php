@@ -4,60 +4,84 @@
 <div class="container">
     <h2>Edit Buku</h2>
 
+    <p>Perbarui data buku di bawah ini.</p>
+
     @if($errors->any())
-        <ul style="color: red;">
-            @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+        <div style="color: red; margin-bottom: 15px;">
+            <strong>Data belum valid. Periksa kembali:</strong>
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
     @endif
 
     <form action="{{ route('books.update', $book) }}" method="POST">
         @csrf
         @method('PUT')
 
-        <p>
-            <label>Judul Buku</label><br>
+        <div style="margin-bottom: 15px;">
+            <label for="judul">Judul Buku</label><br>
             <input
+                id="judul"
                 type="text"
                 name="judul"
                 value="{{ old('judul', $book->judul) }}"
+                maxlength="255"
                 required
             >
-        </p>
 
-        <p>
-            <label>Penulis</label><br>
+            @error('judul')
+                <p style="color: red;">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label for="penulis">Nama Penulis</label><br>
             <input
+                id="penulis"
                 type="text"
                 name="penulis"
                 value="{{ old('penulis', $book->penulis) }}"
+                maxlength="255"
                 required
             >
-        </p>
 
-        <p>
-            <label>Tahun Terbit</label><br>
+            @error('penulis')
+                <p style="color: red;">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label for="tahun_terbit">Tahun Terbit</label><br>
             <input
+                id="tahun_terbit"
                 type="number"
                 name="tahun_terbit"
-                min="1000"
-                max="{{ date('Y') }}"
                 value="{{ old('tahun_terbit', $book->tahun_terbit) }}"
                 required
             >
-        </p>
 
-        <p>
-            <label>Stok</label><br>
+            @error('tahun_terbit')
+                <p style="color: red;">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label for="stok">Stok Buku</label><br>
             <input
+                id="stok"
                 type="number"
                 name="stok"
-                min="0"
                 value="{{ old('stok', $book->stok) }}"
                 required
             >
-        </p>
+
+            @error('stok')
+                <p style="color: red;">{{ $message }}</p>
+            @enderror
+        </div>
 
         <button type="submit">Simpan Perubahan</button>
         <a href="{{ route('books.index') }}">Batal</a>
