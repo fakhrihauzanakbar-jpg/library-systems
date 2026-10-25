@@ -4,17 +4,13 @@
 <div class="container">
     <h2>Daftar Buku</h2>
 
-    <p>Berikut adalah daftar buku yang tersedia di perpustakaan.</p>
+    @if(session('success'))
+        <p style="color: green;">{{ session('success') }}</p>
+    @endif
 
     <p>
         <a href="{{ route('books.create') }}">+ Tambah Buku</a>
     </p>
-
-    @if(session('success'))
-        <p style="color: green;">
-            {{ session('success') }}
-        </p>
-    @endif
 
     @if($books->count() > 0)
         <table border="1" cellpadding="10" cellspacing="0" width="100%">
@@ -25,10 +21,10 @@
                     <th>Penulis</th>
                     <th>Tahun Terbit</th>
                     <th>Stok</th>
+                    <th>Kategori</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
-
             <tbody>
                 @foreach($books as $book)
                     <tr>
@@ -37,24 +33,18 @@
                         <td>{{ $book->penulis }}</td>
                         <td>{{ $book->tahun_terbit }}</td>
                         <td>{{ $book->stok }}</td>
+                        <td>{{ $book->category?->name ?? 'Belum ada kategori' }}</td>
                         <td>
-                            <a href="{{ route('books.show', $book) }}">
-                                Detail
-                            </a>
+                            <a href="{{ route('books.show', $book) }}">Detail</a>
                             |
-                            <a href="{{ route('books.edit', $book) }}">
-                                Edit
-                            </a>
-                            |
-                            <form
-                                action="{{ route('books.destroy', $book) }}"
-                                method="POST"
-                                style="display: inline;"
-                                onsubmit="return confirm('Yakin ingin menghapus buku ini?')"
-                            >
+                            <a href="{{ route('books.edit', $book) }}">Edit</a>
+
+                            <form action="{{ route('books.destroy', $book) }}"
+                                  method="POST"
+                                  style="display:inline"
+                                  onsubmit="return confirm('Yakin ingin menghapus buku ini?')">
                                 @csrf
                                 @method('DELETE')
-
                                 <button type="submit">Hapus</button>
                             </form>
                         </td>

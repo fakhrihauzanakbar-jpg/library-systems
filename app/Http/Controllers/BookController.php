@@ -3,20 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::all();
+        $books = Book::with('category')->get();
 
         return view('books.index', compact('books'));
     }
 
     public function create()
     {
-        return view('books.create');
+        $categories = Category::orderBy('name')->get();
+
+        return view('books.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -31,6 +34,7 @@ class BookController extends Controller
                 'max:' . date('Y'),
             ],
             'stok' => 'required|integer|min:0|max:10000',
+            'category_id' => 'required|exists:categories,id',
         ], [
             'judul.required' => 'Judul buku wajib diisi.',
             'judul.different' => 'Judul tidak boleh sama dengan nama penulis.',
@@ -44,6 +48,8 @@ class BookController extends Controller
             'stok.integer' => 'Stok harus berupa bilangan bulat.',
             'stok.min' => 'Stok tidak boleh negatif.',
             'stok.max' => 'Stok maksimal 10000.',
+            'category_id.required' => 'Kategori wajib dipilih.',
+            'category_id.exists' => 'Kategori yang dipilih tidak tersedia.',
         ]);
 
         Book::create($validated);
@@ -54,12 +60,16 @@ class BookController extends Controller
 
     public function show(Book $book)
     {
+        $book->load('category');
+
         return view('books.show', compact('book'));
     }
 
     public function edit(Book $book)
     {
-        return view('books.edit', compact('book'));
+        $categories = Category::orderBy('name')->get();
+
+        return view('books.edit', compact('book', 'categories'));
     }
 
     public function update(Request $request, Book $book)
@@ -74,6 +84,7 @@ class BookController extends Controller
                 'max:' . date('Y'),
             ],
             'stok' => 'required|integer|min:0|max:10000',
+            'category_id' => 'required|exists:categories,id',
         ], [
             'judul.required' => 'Judul buku wajib diisi.',
             'judul.different' => 'Judul tidak boleh sama dengan nama penulis.',
@@ -87,6 +98,8 @@ class BookController extends Controller
             'stok.integer' => 'Stok harus berupa bilangan bulat.',
             'stok.min' => 'Stok tidak boleh negatif.',
             'stok.max' => 'Stok maksimal 10000.',
+            'category_id.required' => 'Kategori wajib dipilih.',
+            'category_id.exists' => 'Kategori yang dipilih tidak tersedia.',
         ]);
 
         $book->update($validated);

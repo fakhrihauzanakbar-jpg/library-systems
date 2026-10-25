@@ -4,33 +4,16 @@
 <div class="container">
     <h2>Detail Buku</h2>
 
-    <table border="1" cellpadding="10" cellspacing="0">
-        <tr>
-            <th>ID</th>
-            <td>{{ $book->id }}</td>
-        </tr>
-        <tr>
-            <th>Judul</th>
-            <td>{{ $book->judul }}</td>
-        </tr>
-        <tr>
-            <th>Penulis</th>
-            <td>{{ $book->penulis }}</td>
-        </tr>
-        <tr>
-            <th>Tahun Terbit</th>
-            <td>{{ $book->tahun_terbit }}</td>
-        </tr>
-        <tr>
-            <th>Stok</th>
-            <td>{{ $book->stok }}</td>
-        </tr>
-    </table>
-
+    <p><strong>ID:</strong> {{ $book->id }}</p>
+    <p><strong>Judul:</strong> {{ $book->judul }}</p>
+    <p><strong>Penulis:</strong> {{ $book->penulis }}</p>
+    <p><strong>Tahun Terbit:</strong> {{ $book->tahun_terbit }}</p>
+    <p><strong>Stok:</strong> {{ $book->stok }}</p>
     <p>
-        <a href="{{ route('books.index') }}">Kembali ke Daftar Buku</a>
-        |
-        <a href="{{ route('books.edit', $book) }}">Edit Buku</a>
+        <strong>Kategori:</strong>
+        {{ $book->category?->name ?? 'Belum ada kategori' }}
     </p>
+
+    <a href="{{ route('books.index') }}">Kembali ke Daftar Buku</a>
 </div>
 @endsection
